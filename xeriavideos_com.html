@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xeria Videos - Share & Discover Videos</title>
+    <style>
+        /* --- Color Palette & Variables --- */
+        :root {
+            --bg-main: #0b0612;          /* Deep dark purple-black */
+            --bg-card: #160d24;          /* Slightly lighter dark purple for cards */
+            --neon-purple: #be00fe;      /* Primary Color */
+            --neon-green: #00ff66;       /* Secondary Color */
+            --neon-orange: #ff5f1f;      /* Video Titles */
+            --text-light: #e0d5f0;       /* High contrast body text */
+            --text-muted: #8b7ca2;       /* Dimmed text for stats */
+        }
+
+        /* --- Global Reset & Scrollbars --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--neon-purple);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(190, 0, 254, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            text-shadow: 0 0 8px var(--neon-purple);
+        }
+
+        .logo span {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .search-bar {
+            flex: 0 1 500px;
+            display: flex;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-main);
+            border: 1px solid var(--neon-purple);
+            border-radius: 4px 0 0 4px;
+            color: #fff;
+            outline: none;
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 8px var(--neon-purple);
+        }
+
+        .search-bar button {
+            background: var(--neon-purple);
+            border: none;
+            padding: 0 20px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            transition: background 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #9900cc;
+            box-shadow: 0 0 8px var(--neon-purple);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .btn-primary:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .btn-upload {
+            background: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+            color: #fff;
+        }
+
+        .btn-upload:hover {
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        /* --- Main Layout Container --- */
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* --- Sidebar Navigation --- */
+        aside {
+            background-color: var(--bg-card);
+            border-right: 1px solid rgba(190, 0, 254, 0.2);
+            padding: 20px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-section ul {
+            list-style: none;
+        }
+
+        .sidebar-section ul li a {
+            display: block;
+            padding: 8px 0;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-section ul li a:hover {
+            color: var(--neon-purple);
+            padding-left: 5px;
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            padding: 25px;
+            background-color: var(--bg-main);
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--bg-card);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- Video Grid Layout --- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(190, 0, 254, 0.1);
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 4px 15px rgba(190, 0, 254, 0.2);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+
+        .thumbnail-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            border-bottom: 2px solid var(--neon-purple);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 12px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .video-info {
+            padding: 12px;
+        }
+
+        .video-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--neon-orange);
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 6px;
+            height: 44px;
+        }
+
+        .video-title:hover {
+            text-decoration: underline;
+        }
+
+        .video-metadata {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .video-user {
+            color: var(--neon-green);
+            text-decoration: none;
+        }
+
+        .video-actions-inline {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .action-icon-btn:hover {
+            color: var(--neon-green);
+        }
+
+        /* --- Interactive & Functional Modules Split (Grid Setup) --- */
+        .dashboard-widgets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            aside { display: none; }
+            .dashboard-widgets { grid-template-columns: 1fr; }
+        }
+
+        .widget-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(190, 0, 254, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .widget-box h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--neon-green);
+            border-bottom: 1px solid rgba(190, 0, 254, 0.2);
+            padding-bottom: 8px;
+        }
+
+        /* --- User Profile & Bio Widget --- */
+        .profile-widget {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .avatar-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-purple);
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .avatar-placeholder {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-bio {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            background: var(--bg-main);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid var(--neon-purple);
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-main);
+            border: 1px solid rgba(190, 0, 254, 0.4);
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green);
+        }
+
+        /* --- Fake Interactive Comments Section --- */
+        .comment-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        .comment-user {
+            font-weight: bold;
+            color: var(--neon-green);
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <a href="#" class="logo">Xeria<span>Videos</span></a>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search millions of high-quality videos...">
+            <button type="button">Search</button>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#upload-section" class="btn btn-upload">Upload</a>
+            <a href="#account-section" class="btn btn-primary">Sign In / Register</a>
+        </div>
+    </header>
+
+    <!-- App Body Container -->
+    <div class="container">
+        
+        <!-- Left Hand Navigation Sidebar -->
+        <aside>
+            <div class="sidebar-section">
+                <h3>Discover</h3>
+                <ul>
+                    <li><a href="#">Home Base</a></li>
+                    <li><a href="#">Trending Content</a></li>
+                    <li><a href="#">New Releases</a></li>
+                    <li><a href="#">Highest Rated</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3>My Space</h3>
+                <ul>
+                    <li><a href="#">My Channel</a></li>
+                    <li><a href="#">Following Users</a></li>
+                    <li><a href="#">Liked Media</a></li>
+                    <li><a href="#">Download History</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Container -->
+        <main>
+            <div class="section-title">
+                <h2>Recommended Videos</h2>
+            </div>
+
+            <!-- Video Grid Component -->
+            <div class="video-grid">
+                
+                <!-- Video Item 1 -->
+                <div class="video-card">
+                    <div class="thumbnail-container">
+                        <div class="thumbnail-placeholder">Video Preview Frame</div>
+                        <div class="video-duration">12:45</div>
+                    </div>
+                    <div class="video-info">
+                        <a href="#" class="video-title">Epic High Frame Rate Gaming Highlights Mix 2026</a>
+                        <div class="video-metadata">
+                            <span><a href="#" class="video-user">PixelMaster</a></span>
+                            <span>450K views</span>
+                        </div>
+                        <div class="video-metadata">
+                            <div class="video-actions-inline">
+                                <button class="action-icon-btn">👍 Like (12k)</button>
+                                <button class="action-icon-btn">💾 PC Download</button>
+                            </div>
+                            <span>89% rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Item 2 -->
+                <div class="video-card">
+                    <div class="thumbnail-container">
+                        <div class="thumbnail-placeholder">Video Preview Frame</div>
+                        <div class="video-duration">08:12</div>
+                    </div>
+                    <div class="video-info">
+                        <a href="#" class="video-title">Building a Full-Stack Video Server Infrastructure from Scratch</a>
+                        <div class="video-metadata">
+                            <span><a href="#" class="video-user">DevGuru</a></span>
+                            <span>89K views</span>
+                        </div>
+                        <div class="video-metadata">
+                            <div class="video-actions-inline">
+                                <button class="action-icon-btn">👍 Like (3.4k)</button>
+                                <button class="action-icon-btn">💾 PC Download</button>
+                            </div>
+                            <span>95% rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Item 3 -->
+                <div class="video-card">
+                    <div class="thumbnail-container">
+                        <div class="thumbnail-placeholder">Video Preview Frame</div>
+                        <div class="video-duration">22:01</div>
+                    </div>
+                    <div class="video-info">
+                        <a href="#" class="video-title">Deep Space Telescopic Photography & Cyber Ambient Soundtrack</a>
+                        <div class="video-metadata">
+                            <span><a href="#" class="video-user">NebulaX</a></span>
+                            <span>1.2M views</span>
+                        </div>
+                        <div class="video-metadata">
+                            <div class="video-actions-inline">
+                                <button class="action-icon-btn">👍 Like (98k)</button>
+                                <button class="action-icon-btn">💾 PC Download</button>
+                            </div>
+                            <span>99% rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Item 4 -->
+                <div class="video-card">
+                    <div class="thumbnail-container">
+                        <div class="thumbnail-placeholder">Video Preview Frame</div>
+                        <div class="video-duration">05:30</div>
+                    </div>
+                    <div class="video-info">
+                        <a href="#" class="video-title">Neon Cyberpunk Aesthetics and CSS Design Trends Explained</a>
+                        <div class="video-metadata">
+                            <span><a href="#" class="video-user">GlowDesign</a></span>
+                            <span>24K views</span>
+                        </div>
+                        <div class="video-metadata">
+                            <div class="video-actions-inline">
+                                <button class="action-icon-btn">👍 Like (812)</button>
+                                <button class="action-icon-btn">💾 PC Download</button>
+                            </div>
+                            <span>91% rating</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Interactive Functionality Grid (Forms, Account Setup & Profile Views) -->
+            <div class="section-title">
+                <h2>User System Simulation UI</h2>
+            </div>
+
+            <div class="dashboard-widgets">
+                
+                <!-- Account Registration & Profile Setup Widget -->
+                <div id="account-section" class="widget-box">
+                    <h2>1. Create Account & Profile Setup</h2>
+                    <form onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" placeholder="Enter custom username">
+                        </div>
+                        <div class="form-group">
+                            <label>Profile Picture</label>
+                            <input type="file" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label>Custom Biography</label>
+                            <textarea rows="3" placeholder="Write something about your channel..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-upload" style="width: 100%;">Save Profile & Register</button>
+                    </form>
+
+                    <div style="margin-top: 20px;" class="profile-widget">
+                        <div class="avatar-container">
+                            <div class="avatar-placeholder">No Image<br>Selected</div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="profile-name">PreviewUser_99</div>
+                            <div class="profile-bio">This is what your profile bio widget looks like when live on the template.</div>
+                            <button class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;">+ Follow User</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Uploading Module Interface -->
+                <div id="upload-section" class="widget-box">
+                    <h2>2. Upload & Media Processing Panel</h2>
+                    <form onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <label>Select Video File (.mp4, .mkv)</label>
+                            <input type="file" accept="video/*">
+                        </div>
+                        <div class="form-group">
+                            <label>Video Descriptive Title</label>
+                            <input type="text" placeholder="Make it sound catchy...">
+                        </div>
+                        <div class="form-group">
+                            <label>Tags / Categories (Comma separated)</label>
+                            <input type="text" placeholder="gaming, tech, tutorials">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Publish Video to Xeria Grid</button>
+                    </form>
+
+                    <!-- Mock Comments Component inside layout -->
+                    <div style="margin-top: 20px;">
+                        <h3 style="font-size: 14px; margin-bottom: 5px; color: var(--neon-purple);">Mock Comments Feed</h3>
+                        <div class="form-group" style="display: flex; gap: 5px;">
+                            <input type="text" placeholder="Add a public comment..." style="flex: 1;">
+                            <button class="btn btn-upload" style="padding: 0 15px;">Post</button>
+                        </div>
+                        <div class="comment-list">
+                            <div class="comment-item">
+                                <div class="comment-user">NetRunner2026</div>
+                                <span>Awesome UI color selection. Neon scheme looks way cleaner than default styling layouts!</span>
+                            </div>
+                            <div class="comment-item">
+                                <div class="comment-user">CodeSlinger</div>
+                                <span>The download component is placed neatly under each metadata row. Exactly what I was looking for.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
