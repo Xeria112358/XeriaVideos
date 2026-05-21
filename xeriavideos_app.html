@@ -1,0 +1,1481 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xeria Videos - Neon Premium Video Platform</title>
+    <!-- Lucide Icons CDN for sleek UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* CSS Variables defining the custom requested Neon Scheme */
+        :root {
+            --bg-deep: #05020a;          /* Deepest cosmic black-purple */
+            --bg-card: #0e0717;          /* Card and header background */
+            --bg-hover: #170d24;         /* Highlighting/Hover state */
+            --neon-purple: #be00fe;      /* Primary Neon Accent */
+            --neon-green: #00ff66;       /* Secondary Accent */
+            --neon-orange: #ff5f1f;      /* Video Titles */
+            --text-light: #e6e1f0;       /* Primary crisp text */
+            --text-muted: #8b7ca2;       /* Dimmed details text */
+            --neon-purple-glow: 0 0 8px rgba(190, 0, 254, 0.6);
+            --neon-green-glow: 0 0 8px rgba(0, 255, 102, 0.6);
+        }
+
+        /* Reset and Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Custom Neon Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+            box-shadow: var(--neon-purple-glow);
+        }
+
+        /* Header Style mapping to classic layouts but modernized */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--neon-purple);
+            box-shadow: 0 2px 15px rgba(190, 0, 254, 0.25);
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: var(--neon-purple-glow);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--neon-green);
+            text-shadow: var(--neon-green-glow);
+        }
+
+        /* XNXX style central search box */
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            display: flex;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 11px 15px;
+            background-color: var(--bg-deep);
+            border: 1px solid var(--neon-purple);
+            border-radius: 4px 0 0 4px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: var(--neon-green);
+            box-shadow: var(--neon-green-glow);
+        }
+
+        .search-container button {
+            background-color: var(--neon-purple);
+            border: none;
+            color: #fff;
+            padding: 0 22px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+
+        .search-container button:hover {
+            background-color: #df00ff;
+            box-shadow: var(--neon-purple-glow);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Premium Buttons */
+        .btn {
+            padding: 9px 18px;
+            font-weight: bold;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-purple {
+            background-color: var(--neon-purple);
+            color: #fff;
+        }
+
+        .btn-purple:hover {
+            background-color: #d100f5;
+            box-shadow: var(--neon-purple-glow);
+        }
+
+        .btn-green-outline {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .btn-green-outline:hover {
+            background-color: var(--neon-green);
+            color: #000;
+            box-shadow: var(--neon-green-glow);
+        }
+
+        /* Secondary Tag/Navigation Ribbon underneath header */
+        .navigation-ribbon {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none; /* Hide scrollbar for standard browsers */
+        }
+        .navigation-ribbon::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+
+        .ribbon-tag {
+            color: var(--text-light);
+            text-decoration: none;
+            background-color: var(--bg-deep);
+            border: 1px solid rgba(190, 0, 254, 0.3);
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .ribbon-tag:hover, .ribbon-tag.active {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: var(--neon-green-glow);
+            background-color: var(--bg-hover);
+        }
+
+        /* Main Structural Grid Container */
+        .app-wrapper {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: calc(100vh - 110px);
+        }
+
+        /* Sidebar Navigation Structure */
+        aside {
+            background-color: var(--bg-card);
+            border-right: 1px solid rgba(190, 0, 254, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--neon-green);
+            margin-bottom: 12px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(0,255,102,0.2);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 4px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item a:hover, .sidebar-item.active a {
+            background-color: var(--bg-hover);
+            color: var(--neon-purple);
+            padding-left: 14px;
+        }
+
+        .sidebar-item a i {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Main Feed area layout */
+        main {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Interactive Showcase Frame (Active Player Detail Row) */
+        .player-container-section {
+            display: none; /* Block when active */
+            background-color: var(--bg-card);
+            border: 2px solid var(--neon-purple);
+            border-radius: 8px;
+            box-shadow: var(--neon-purple-glow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .main-video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 6px;
+            outline: none;
+            border: 1px solid var(--bg-hover);
+        }
+
+        .player-metadata {
+            margin-top: 15px;
+        }
+
+        .player-title {
+            color: var(--neon-orange);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .player-stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(190,0,254,0.2);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .creator-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-green);
+            object-fit: cover;
+            background-color: var(--bg-deep);
+        }
+
+        .creator-name-bio h4 {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .creator-name-bio p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .interaction-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background-color: var(--bg-deep);
+            border: 1px solid rgba(190,0,254,0.3);
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .action-button:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: var(--neon-green-glow);
+        }
+
+        .action-button.liked {
+            background-color: var(--neon-purple);
+            color: #fff;
+            border-color: var(--neon-purple);
+        }
+
+        /* Comments Split View */
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comments-header {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--neon-purple);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-input-box textarea {
+            flex: 1;
+            background-color: var(--bg-deep);
+            border: 1px solid rgba(190,0,254,0.4);
+            border-radius: 6px;
+            padding: 10px;
+            color: #fff;
+            resize: none;
+            height: 44px;
+            font-size: 13px;
+        }
+
+        .comment-input-box textarea:focus {
+            outline: none;
+            border-color: var(--neon-green);
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .comment-node {
+            background-color: var(--bg-deep);
+            padding: 10px 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--neon-purple);
+        }
+
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .comment-user {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Standard Video Grid */
+        .feed-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(190,0,254,0.2);
+            padding-bottom: 8px;
+        }
+
+        .feed-section-header h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px rgba(0,255,102,0.15);
+        }
+
+        .dense-video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* Video Card - Styled closely like layout details of XNXX */
+        .video-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(190,0,254,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--neon-purple);
+            box-shadow: var(--neon-purple-glow);
+        }
+
+        .card-preview-zone {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/10;
+            background-color: #020104;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Preview elements */
+        .card-canvas-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.35;
+        }
+
+        .card-custom-play-btn {
+            z-index: 2;
+            color: var(--neon-green);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: var(--neon-green-glow);
+            transition: transform 0.2s;
+        }
+
+        .video-card:hover .card-custom-play-btn {
+            transform: scale(1.15);
+        }
+
+        .card-duration-overlay {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 2px 5px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 2px;
+            z-index: 2;
+        }
+
+        .card-info {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        /* Requested: neon orange for video titles */
+        .card-title {
+            color: var(--neon-orange);
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.35;
+            height: 38px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-decoration: none;
+        }
+
+        .card-title:hover {
+            text-decoration: underline;
+        }
+
+        .card-metadata-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        .card-uploader {
+            color: var(--neon-green);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .card-rating-views {
+            display: flex;
+            gap: 8px;
+        }
+
+        .rating-pill {
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--neon-green);
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* Global Overlay Portals/Modals */
+        .portal-overlay {
+            display: none; /* flex when active */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .portal-modal {
+            background-color: var(--bg-card);
+            border: 2px solid var(--neon-purple);
+            border-radius: 8px;
+            box-shadow: var(--neon-purple-glow);
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            position: relative;
+        }
+
+        .portal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .portal-close-btn:hover {
+            color: var(--neon-purple);
+        }
+
+        .portal-modal h2 {
+            margin-bottom: 15px;
+            color: var(--neon-green);
+            font-size: 20px;
+            border-bottom: 1px solid rgba(190,0,254,0.2);
+            padding-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="password"],
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-deep);
+            border: 1px solid rgba(190,0,254,0.3);
+            border-radius: 4px;
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--neon-purple);
+            box-shadow: var(--neon-purple-glow);
+        }
+
+        /* File Upload styling wrapper */
+        .file-upload-wrapper {
+            position: relative;
+            background-color: var(--bg-deep);
+            border: 1px dashed var(--neon-purple);
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--neon-green);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Success alerts styling */
+        .toast-notify {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--neon-green);
+            box-shadow: var(--neon-green-glow);
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Responsive adaptation */
+        @media (max-width: 850px) {
+            .app-wrapper {
+                grid-template-columns: 1fr;
+            }
+            aside {
+                display: none; /* Compact touch menus */
+            }
+            header {
+                padding: 10px 15px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation Section -->
+    <header>
+        <div class="header-main">
+            <a href="#" class="logo" onclick="resetToHome()">Xeria<span>Videos</span></a>
+            
+            <div class="search-container">
+                <input id="searchInput" type="text" placeholder="Search premium neon videos...">
+                <button type="button" onclick="executeSearch()"><i data-lucide="search"></i></button>
+            </div>
+
+            <div class="header-actions">
+                <button onclick="togglePortal('uploadPortal')" class="btn btn-purple"><i data-lucide="upload-cloud"></i> Upload</button>
+                <div id="authHeaderZone">
+                    <button onclick="togglePortal('authPortal')" class="btn btn-green-outline"><i data-lucide="user-plus"></i> Join / Login</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Horizontal dense tags selector like classic websites -->
+        <div class="navigation-ribbon">
+            <a href="#" class="ribbon-tag active" onclick="filterCategory('All', this)">All Media</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Synthwave', this)">Synthwave</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Gaming', this)">Gaming</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Futuristic', this)">Futuristic</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Cyberpunk', this)">Cyberpunk</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Abstract', this)">Abstract</a>
+            <a href="#" class="ribbon-tag" onclick="filterCategory('Tutorials', this)">Tutorials</a>
+        </div>
+    </header>
+
+    <!-- Structural App Layout -->
+    <div class="app-wrapper">
+        
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="sidebar-section">
+                <h3>Discover</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item active" id="homeSidebarBtn"><a href="#" onclick="resetToHome()"><i data-lucide="home"></i> Home Feed</a></li>
+                    <li class="sidebar-item"><a href="#" onclick="filterCategory('Synthwave')"><i data-lucide="music"></i> Synthwave Loops</a></li>
+                    <li class="sidebar-item"><a href="#" onclick="filterCategory('Cyberpunk')"><i data-lucide="terminal"></i> Cyber Coding</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Creator Ecosystem</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item"><a href="#" onclick="togglePortal('profilePortal')"><i data-lucide="user"></i> My Channel Profile</a></li>
+                    <li class="sidebar-item"><a href="#" onclick="showFollowedCreators()"><i data-lucide="users"></i> Followed Creators (<span id="followedCount">0</span>)</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 style="color: var(--neon-purple)">Ecosystem Stats</h3>
+                <ul class="sidebar-menu" style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                    <li>Total Videos: <span id="statVideoCount">4</span></li>
+                    <li>Global Views: 1,402,192</li>
+                    <li>Platform State: Online</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Body Content Area -->
+        <main>
+            
+            <!-- Custom Integrated Video Player Showcase Window -->
+            <section id="playerShowcase" class="player-container-section">
+                <video id="playerMedia" class="main-video-player" controls autoplay></video>
+                
+                <div class="player-metadata">
+                    <h1 id="playerTitle" class="player-title">Welcome to Xeria Videos Sandbox</h1>
+                    
+                    <div class="player-stats-row">
+                        <div class="creator-info">
+                            <img id="playerCreatorAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Creator Avatar" class="creator-avatar">
+                            <div class="creator-name-bio">
+                                <h4 id="playerCreatorName">System_Administrator</h4>
+                                <p id="playerCreatorBio">Default administrative loop engine.</p>
+                            </div>
+                            <button id="followButton" onclick="handleFollowUploader()" class="btn btn-green-outline" style="padding: 4px 10px; font-size: 11px;">+ Follow</button>
+                        </div>
+
+                        <div class="interaction-actions">
+                            <button id="likeBtn" onclick="handleLikeCurrent()" class="action-button"><i data-lucide="thumbs-up"></i> Like (<span id="playerLikeCount">1.2k</span>)</button>
+                            <button id="downloadBtn" onclick="handleDownloadCurrent()" class="action-button"><i data-lucide="download"></i> PC Download</button>
+                        </div>
+                    </div>
+
+                    <!-- Direct platform style commentary system -->
+                    <div class="comments-section">
+                        <div class="comments-header">
+                            <i data-lucide="message-square"></i> Comments Feed (<span id="commentCountLabel">2</span>)
+                        </div>
+
+                        <div class="comment-input-box">
+                            <textarea id="commentInput" placeholder="Add your perspective onto this video broadcast..."></textarea>
+                            <button onclick="handleAddComment()" class="btn btn-purple">Post Comment</button>
+                        </div>
+
+                        <div id="commentsContainer" class="comments-list">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Regular Grid Content Wrapper -->
+            <div class="feed-section-header">
+                <h2 id="gridTitle">Live Premium Broadcasts</h2>
+                <span style="font-size: 12px; color: var(--text-muted)" id="totalVideosDisplay">Showing 4 results</span>
+            </div>
+
+            <div id="videoGrid" class="dense-video-grid">
+                <!-- Standard videos populate dynamically here -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PORTAL MODALS -->
+
+    <!-- Account authentication Portal -->
+    <div id="authPortal" class="portal-overlay">
+        <div class="portal-modal">
+            <button class="portal-close-btn" onclick="togglePortal('authPortal')"><i data-lucide="x"></i></button>
+            <h2>Join Xeria Channels</h2>
+            <form onsubmit="handleRegistrationSubmit(event)">
+                <div class="input-group">
+                    <label>Pick Username</label>
+                    <input type="text" id="regUsername" required placeholder="NeonHacker_99">
+                </div>
+                <div class="input-group">
+                    <label>Profile Picture</label>
+                    <div class="file-upload-wrapper">
+                        <span id="picFileName">Choose Avatar Image file</span>
+                        <input type="file" id="regAvatar" accept="image/*" onchange="previewFileName(this, 'picFileName')">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Public Biography (Bio)</label>
+                    <textarea id="regBio" rows="3" placeholder="I like retro wave layouts, cyber networks, and coding synth loops."></textarea>
+                </div>
+                <button type="submit" class="btn btn-purple" style="width: 100%; margin-top: 10px;">Activate Account Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Uploading Portal -->
+    <div id="uploadPortal" class="portal-overlay">
+        <div class="portal-modal">
+            <button class="portal-close-btn" onclick="togglePortal('uploadPortal')"><i data-lucide="x"></i></button>
+            <h2>Upload Video Asset</h2>
+            <form onsubmit="handleVideoUpload(event)">
+                <div class="input-group">
+                    <label>Video Title</label>
+                    <input type="text" id="uploadTitle" required placeholder="Neon Cyberpunk Loops Ep.1">
+                </div>
+                <div class="input-group">
+                    <label>Select Local Video File (.mp4, .webm, etc.)</label>
+                    <div class="file-upload-wrapper">
+                        <span id="videoFileName">Choose video asset file</span>
+                        <input type="file" id="uploadFile" accept="video/*" required onchange="previewFileName(this, 'videoFileName')">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Video Category</label>
+                    <input type="text" id="uploadCategory" placeholder="e.g. Synthwave, Cyberpunk, Gaming" required>
+                </div>
+                <div class="input-group">
+                    <label>Estimated Video Duration</label>
+                    <input type="text" id="uploadDuration" placeholder="e.g. 05:12" required>
+                </div>
+                <button type="submit" class="btn btn-purple" style="width: 100%; margin-top: 10px;">Publish Instantly to Grid</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Personal Profile / Channel Portal -->
+    <div id="profilePortal" class="portal-overlay">
+        <div class="portal-modal">
+            <button class="portal-close-btn" onclick="togglePortal('profilePortal')"><i data-lucide="x"></i></button>
+            <h2>My Channel Settings</h2>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="myAvatarDisplay" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="My Profile Avatar" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-purple); object-fit: cover;">
+                <h3 id="myUsernameDisplay" style="margin-top: 8px; color: var(--neon-green)">Anonymous_Viewer</h3>
+            </div>
+            <div class="input-group">
+                <label>My Current Biography</label>
+                <textarea id="myBioDisplay" rows="3" placeholder="No bio written yet."></textarea>
+            </div>
+            <button class="btn btn-purple" style="width: 100%;" onclick="updateMyBio()">Update Settings</button>
+        </div>
+    </div>
+
+    <!-- Notifications Element -->
+    <div id="toastNotification" class="toast-notify">
+        <i data-lucide="check-circle" style="color: var(--neon-green)"></i>
+        <span id="toastMessage">Success notification element</span>
+    </div>
+
+    <!-- SYSTEM LOGIC ENGINE -->
+    <script>
+        // Default mock database structure populated for simulation
+        const initialVideoDataset = [
+            {
+                id: "v_1",
+                title: "Retrowave Grid Horizon: Synthetic Loop Visuals",
+                duration: "04:15",
+                category: "Synthwave",
+                views: "34,204",
+                rating: "98%",
+                likes: 1250,
+                uploader: "SynthLord_99",
+                uploaderAvatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=100&q=80",
+                uploaderBio: "Synth production and design visuals.",
+                mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-flying-through-a-neon-tunnel-41584-large.mp4",
+                isCustom: false,
+                canvasSeed: "grid",
+                comments: [
+                    { user: "NeonKnight", time: "2 hours ago", text: "This looks exactly like the grid of xnxx but with super cool color parameters. Love it!" },
+                    { user: "ByteChaser", time: "1 day ago", text: "Pure retrowave vibes, the loop visual is extremely clean." }
+                ]
+            },
+            {
+                id: "v_2",
+                title: "Interactive Web Interfaces & CSS Neon Glow Tricks",
+                duration: "12:30",
+                category: "Cyberpunk",
+                views: "12,940",
+                rating: "94%",
+                likes: 412,
+                uploader: "Dev_Kore_Hacker",
+                uploaderAvatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80",
+                uploaderBio: "Coding masterclasses focused on neon aesthetics and CSS layouts.",
+                mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-camera-panning-slowly-across-computer-hardware-34139-large.mp4",
+                isCustom: false,
+                canvasSeed: "matrix",
+                comments: [
+                    { user: "PixelFixer", time: "3 hours ago", text: "These design guidelines made my website header pop perfectly." }
+                ]
+            },
+            {
+                id: "v_3",
+                title: "Epic Neon Cyberpunk Cityscape Flyby Animation",
+                duration: "02:45",
+                category: "Cyberpunk",
+                views: "115,002",
+                rating: "97%",
+                likes: 3892,
+                uploader: "NebulaVisuals",
+                uploaderAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
+                uploaderBio: "3D animation studio designing loop landscapes.",
+                mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-tokyo-street-at-night-with-rain-42173-large.mp4",
+                isCustom: false,
+                canvasSeed: "neon",
+                comments: []
+            },
+            {
+                id: "v_4",
+                title: "Synthwave Audio Spectrum Waves & Deep Ambient Audio",
+                duration: "45:00",
+                category: "Synthwave",
+                views: "5,112",
+                rating: "89%",
+                likes: 201,
+                uploader: "FrequencyLord",
+                uploaderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+                uploaderBio: "Ambient waveforms and long duration audio loops.",
+                mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-rotating-retro-audio-cassette-tape-animation-34255-large.mp4",
+                isCustom: false,
+                canvasSeed: "audio",
+                comments: []
+            }
+        ];
+
+        // Global User State Session
+        let currentUser = {
+            username: "Guest_Viewer",
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+            bio: "Enjoying video streams on Xeria platform."
+        };
+
+        let followedUploaderList = [];
+        let globalVideoList = [...initialVideoDataset];
+        let currentlyPlayingVideo = null;
+
+        // Initialize Application Context
+        window.addEventListener('DOMContentLoaded', () => {
+            renderVideoGrid(globalVideoList);
+            lucide.createIcons();
+        });
+
+        // Trigger Alert / Toast system
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').textContent = message;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Generic close/open portal controls
+        function togglePortal(portalId) {
+            const portal = document.getElementById(portalId);
+            if (portal.style.display === 'flex') {
+                portal.style.display = 'none';
+            } else {
+                portal.style.display = 'flex';
+            }
+        }
+
+        // Preview local file selected strings inside customized portals
+        function previewFileName(input, targetSpanId) {
+            const targetSpan = document.getElementById(targetSpanId);
+            if (input.files && input.files.length > 0) {
+                targetSpan.textContent = input.files[0].name;
+            } else {
+                targetSpan.textContent = "Choose asset file";
+            }
+        }
+
+        // Render standard dense media grids
+        function renderVideoGrid(dataset) {
+            const gridContainer = document.getElementById('videoGrid');
+            gridContainer.innerHTML = '';
+            
+            document.getElementById('totalVideosDisplay').textContent = `Showing ${dataset.length} results`;
+            document.getElementById('statVideoCount').textContent = globalVideoList.length;
+
+            if (dataset.length === 0) {
+                gridContainer.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i data-lucide="video-off" style="width: 48px; height: 48px; margin-bottom: 10px; color: var(--neon-purple);"></i>
+                        <p>No video matches matching your request currently active on the grid.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            dataset.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.onclick = () => selectAndPlayVideo(video.id);
+
+                // Create individual video cards matching grid patterns
+                videoCard.innerHTML = `
+                    <div class="card-preview-zone">
+                        <canvas class="card-canvas-backdrop" id="canvas_${video.id}"></canvas>
+                        <div class="card-custom-play-btn">
+                            <i data-lucide="play" style="width: 20px; height: 20px;"></i>
+                        </div>
+                        <span class="card-duration-overlay">${video.duration}</span>
+                    </div>
+                    <div class="card-info">
+                        <a href="#" class="card-title" onclick="event.preventDefault(); selectAndPlayVideo('${video.id}')">${video.title}</a>
+                        <div class="card-metadata-row">
+                            <span>by <span class="card-uploader">${video.uploader}</span></span>
+                            <span>${video.views} views</span>
+                        </div>
+                        <div class="card-metadata-row" style="margin-top: 5px;">
+                            <span class="rating-pill">${video.rating} rating</span>
+                            <span style="color: var(--neon-purple); cursor: pointer;" onclick="event.stopPropagation(); triggerLocalDownload('${video.id}')">
+                                <i data-lucide="download" style="width:13px; height:13px; display:inline; vertical-align:text-bottom;"></i> Save
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                gridContainer.appendChild(videoCard);
+                renderDynamicThumbnails(video.id, video.canvasSeed);
+            });
+
+            lucide.createIcons();
+        }
+
+        // Dynamic Thumbnail Canvas Renderer to generate unique graphics per seed
+        function renderDynamicThumbnails(id, seed) {
+            const canvas = document.getElementById(`canvas_${id}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = 240;
+            canvas.height = 150;
+
+            // Base Background fill
+            ctx.fillStyle = '#0a0314';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Seed based artwork generations
+            ctx.lineWidth = 1.5;
+            if (seed === 'grid') {
+                ctx.strokeStyle = '#be00fe';
+                for (let i = 0; i < canvas.width; i += 15) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, canvas.height);
+                    ctx.stroke();
+                }
+                ctx.strokeStyle = '#00ff66';
+                for (let i = 0; i < canvas.height; i += 15) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(canvas.width, i);
+                    ctx.stroke();
+                }
+            } else if (seed === 'matrix') {
+                ctx.fillStyle = 'rgba(0, 255, 102, 0.4)';
+                ctx.font = '10px monospace';
+                for (let i = 0; i < 8; i++) {
+                    ctx.fillText("01010110", Math.random() * canvas.width, Math.random() * canvas.height);
+                    ctx.fillText("CYBER", Math.random() * canvas.width, Math.random() * canvas.height);
+                }
+            } else if (seed === 'neon') {
+                ctx.strokeStyle = '#ff5f1f';
+                ctx.shadowColor = '#ff5f1f';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, 40, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            } else {
+                // Waveforms
+                ctx.strokeStyle = '#be00fe';
+                ctx.beginPath();
+                for (let x = 0; x < canvas.width; x++) {
+                    let y = canvas.height / 2 + Math.sin(x * 0.1) * 20;
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+        }
+
+        // Filter Video collection by selected tags
+        function filterCategory(category, element) {
+            // Update UI ribbons
+            const tags = document.querySelectorAll('.ribbon-tag');
+            tags.forEach(tag => tag.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+            }
+
+            if (category === 'All') {
+                document.getElementById('gridTitle').textContent = "Live Premium Broadcasts";
+                renderVideoGrid(globalVideoList);
+            } else {
+                document.getElementById('gridTitle').textContent = `Filtered Broadcasts: ${category}`;
+                const filtered = globalVideoList.filter(vid => vid.category.toLowerCase().includes(category.toLowerCase()));
+                renderVideoGrid(filtered);
+            }
+        }
+
+        // Direct search execution
+        function executeSearch() {
+            const q = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (q === "") {
+                renderVideoGrid(globalVideoList);
+                return;
+            }
+            const filtered = globalVideoList.filter(v => 
+                v.title.toLowerCase().includes(q) || 
+                v.uploader.toLowerCase().includes(q) || 
+                v.category.toLowerCase().includes(q)
+            );
+            document.getElementById('gridTitle').textContent = `Search Match Results for: "${q}"`;
+            renderVideoGrid(filtered);
+        }
+
+        // Reset search triggers
+        function resetToHome() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('playerShowcase').style.display = 'none';
+            document.getElementById('playerMedia').pause();
+            
+            // Set ribbon tag All to active
+            const tags = document.querySelectorAll('.ribbon-tag');
+            tags.forEach(tag => tag.classList.remove('active'));
+            if (tags[0]) tags[0].classList.add('active');
+
+            filterCategory('All');
+        }
+
+        // Watch player activation trigger
+        function selectAndPlayVideo(videoId) {
+            const video = globalVideoList.find(v => v.id === videoId);
+            if (!video) return;
+
+            currentlyPlayingVideo = video;
+            const showcaseSection = document.getElementById('playerShowcase');
+            const mediaElement = document.getElementById('playerMedia');
+
+            showcaseSection.style.display = 'block';
+            mediaElement.src = video.mediaUrl;
+            mediaElement.load();
+            mediaElement.play();
+
+            document.getElementById('playerTitle').textContent = video.title;
+            document.getElementById('playerCreatorName').textContent = video.uploader;
+            document.getElementById('playerCreatorAvatar').src = video.uploaderAvatar;
+            document.getElementById('playerCreatorBio').textContent = video.uploaderBio || "No bio published.";
+            document.getElementById('playerLikeCount').textContent = video.likes;
+
+            // Set dynamic button states based on follows
+            const followBtn = document.getElementById('followButton');
+            if (followedUploaderList.includes(video.uploader)) {
+                followBtn.textContent = 'Following';
+                followBtn.style.backgroundColor = 'var(--neon-green)';
+                followBtn.style.color = '#000';
+            } else {
+                followBtn.textContent = '+ Follow';
+                followBtn.style.backgroundColor = 'transparent';
+                followBtn.style.color = 'var(--neon-green)';
+            }
+
+            // Populate Comments inside details container
+            renderComments(video);
+            
+            // Scroll dynamically to player module
+            showcaseSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Render comments list
+        function renderComments(video) {
+            const commentsContainer = document.getElementById('commentsContainer');
+            commentsContainer.innerHTML = '';
+            
+            document.getElementById('commentCountLabel').textContent = video.comments.length;
+
+            if (video.comments.length === 0) {
+                commentsContainer.innerHTML = `<div style="text-align:center; padding: 10px; color: var(--text-muted); font-size:12px;">No comments. Be the first to express thoughts!</div>`;
+                return;
+            }
+
+            video.comments.forEach(comment => {
+                const node = document.createElement('div');
+                node.className = 'comment-node';
+                node.innerHTML = `
+                    <div class="comment-meta">
+                        <span class="comment-user">${comment.user}</span>
+                        <span>${comment.time}</span>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                `;
+                commentsContainer.appendChild(node);
+            });
+        }
+
+        // Interactive commenting event handler
+        function handleAddComment() {
+            if (!currentlyPlayingVideo) return;
+            const inputField = document.getElementById('commentInput');
+            const commentText = inputField.value.trim();
+            if (commentText === "") return;
+
+            currentlyPlayingVideo.comments.unshift({
+                user: currentUser.username,
+                time: "Just now",
+                text: commentText
+            });
+
+            inputField.value = '';
+            renderComments(currentlyPlayingVideo);
+            showToast("Comment published to the public video feed.");
+        }
+
+        // Follow creator handler
+        function handleFollowUploader() {
+            if (!currentlyPlayingVideo) return;
+            const uploaderName = currentlyPlayingVideo.uploader;
+            const followBtn = document.getElementById('followButton');
+
+            if (followedUploaderList.includes(uploaderName)) {
+                // Unfollow logic
+                followedUploaderList = followedUploaderList.filter(name => name !== uploaderName);
+                followBtn.textContent = '+ Follow';
+                followBtn.style.backgroundColor = 'transparent';
+                followBtn.style.color = 'var(--neon-green)';
+                showToast(`Stopped following ${uploaderName}`);
+            } else {
+                // Follow logic
+                followedUploaderList.push(uploaderName);
+                followBtn.textContent = 'Following';
+                followBtn.style.backgroundColor = 'var(--neon-green)';
+                followBtn.style.color = '#000';
+                showToast(`Following ${uploaderName} is active!`);
+            }
+
+            document.getElementById('followedCount').textContent = followedUploaderList.length;
+        }
+
+        // Follow lists trigger rendering
+        function showFollowedCreators() {
+            if (followedUploaderList.length === 0) {
+                showToast("You are not currently following any creators.");
+                return;
+            }
+            document.getElementById('gridTitle').textContent = "Followed Creators Feed";
+            const filtered = globalVideoList.filter(v => followedUploaderList.includes(v.uploader));
+            renderVideoGrid(filtered);
+        }
+
+        // Like handler toggles view state rating increments
+        function handleLikeCurrent() {
+            if (!currentlyPlayingVideo) return;
+            const likeBtn = document.getElementById('likeBtn');
+            
+            if (likeBtn.classList.contains('liked')) {
+                currentlyPlayingVideo.likes -= 1;
+                likeBtn.classList.remove('liked');
+                likeBtn.style.color = 'var(--text-light)';
+                likeBtn.style.borderColor = 'rgba(190,0,254,0.3)';
+            } else {
+                currentlyPlayingVideo.likes += 1;
+                likeBtn.classList.add('liked');
+                likeBtn.style.color = 'var(--neon-green)';
+                likeBtn.style.borderColor = 'var(--neon-green)';
+                showToast("Video added to your liked catalog!");
+            }
+
+            document.getElementById('playerLikeCount').textContent = currentlyPlayingVideo.likes;
+        }
+
+        // Handle direct downloads to local device safely via native triggers
+        function handleDownloadCurrent() {
+            if (!currentlyPlayingVideo) return;
+            triggerLocalDownload(currentlyPlayingVideo.id);
+        }
+
+        function triggerLocalDownload(videoId) {
+            const video = globalVideoList.find(v => v.id === videoId);
+            if (!video) return;
+
+            // Trigger true anchor-bound download actions
+            const anchor = document.createElement('a');
+            anchor.href = video.mediaUrl;
+            anchor.download = `${video.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.mp4`;
+            anchor.target = '_blank';
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+
+            showToast(`Initiating PC download for: "${video.title}"`);
+        }
+
+        // Registration form handler logic to customize layout session
+        function handleRegistrationSubmit(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('regUsername').value.trim();
+            const bioInput = document.getElementById('regBio').value.trim();
+            const avatarFileInput = document.getElementById('regAvatar');
+
+            currentUser.username = usernameInput;
+            if (bioInput !== '') currentUser.bio = bioInput;
+
+            // Handle FileReader base64 parsing for profile avatars
+            if (avatarFileInput.files && avatarFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    applyAccountStateChange();
+                }
+                reader.readAsDataURL(avatarFileInput.files[0]);
+            } else {
+                applyAccountStateChange();
+            }
+        }
+
+        function applyAccountStateChange() {
+            // Update Header Display profile elements
+            const authHeaderZone = document.getElementById('authHeaderZone');
+            authHeaderZone.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="togglePortal('profilePortal')">
+                    <img src="${currentUser.avatar}" alt="My Avatar" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--neon-green); object-fit: cover;">
+                    <span style="font-weight: bold; font-size:13px; color: var(--neon-green)">${currentUser.username}</span>
+                </div>
+            `;
+
+            // Pre-fill fields for modifications portal
+            document.getElementById('myAvatarDisplay').src = currentUser.avatar;
+            document.getElementById('myUsernameDisplay').textContent = currentUser.username;
+            document.getElementById('myBioDisplay').value = currentUser.bio;
+
+            togglePortal('authPortal');
+            showToast(`Profile activated: Welcome to Xeria, ${currentUser.username}!`);
+        }
+
+        function updateMyBio() {
+            const newBio = document.getElementById('myBioDisplay').value.trim();
+            currentUser.bio = newBio;
+            showToast("Channel profile biography parameters updated.");
+            togglePortal('profilePortal');
+        }
+
+        // Upload handler parsing actual local MP4 inputs immediately live onto main feed 
+        function handleVideoUpload(event) {
+            event.preventDefault();
+            const title = document.getElementById('uploadTitle').value.trim();
+            const category = document.getElementById('uploadCategory').value.trim();
+            const duration = document.getElementById('uploadDuration').value.trim();
+            const videoFile = document.getElementById('uploadFile').files[0];
+
+            if (!videoFile) return;
+
+            // Generate fully operational object URL playable across player modules
+            const objectUrl = URL.createObjectURL(videoFile);
+            const newVideoId = `v_custom_${Date.now()}`;
+
+            const newVideoObject = {
+                id: newVideoId,
+                title: title,
+                duration: duration || "03:40",
+                category: category || "Abstract",
+                views: "1 view",
+                rating: "100%",
+                likes: 1,
+                uploader: currentUser.username,
+                uploaderAvatar: currentUser.avatar,
+                uploaderBio: currentUser.bio,
+                mediaUrl: objectUrl,
+                isCustom: true,
+                canvasSeed: "custom",
+                comments: []
+            };
+
+            // Prepend directly into feed database to make it instantly visible as Requested
+            globalVideoList.unshift(newVideoObject);
+            
+            // Reset fields
+            document.getElementById('uploadTitle').value = '';
+            document.getElementById('uploadCategory').value = '';
+            document.getElementById('uploadDuration').value = '';
+            document.getElementById('uploadFile').value = '';
+            document.getElementById('videoFileName').textContent = "Choose video asset file";
+
+            // Close modal UI portal
+            togglePortal('uploadPortal');
+            
+            // Re-render feed instantly placing user uploaded item first
+            renderVideoGrid(globalVideoList);
+            showToast("Video uploaded and published immediately onto the live main grid!");
+        }
+    </script>
+</body>
+</html>
+
+```
